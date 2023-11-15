@@ -8,7 +8,7 @@ public class Categoria
 {
     [Key]
     [Required]
-    public Guid IdCategoria { get; protected set; } = Guid.NewGuid();
+    public Guid Id { get; protected set; } = Guid.NewGuid();
     [Required]
     [StringLength(50)]
     public string Nombre { get; set; } = string.Empty;

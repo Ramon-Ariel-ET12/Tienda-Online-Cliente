@@ -1,25 +1,61 @@
 using Aplicacion.Dominio;
+using Api.Persistencia;
+
 namespace Api.Funcionalidades.Clientes;
 
 public interface IClienteService
 {
+    void DeleteCliente(Guid Idcliente);
+    void UpdateCliente(Guid Idcliente, ClienteDto clienteDto);
+    void CreateCliente(ClienteDto clienteDto);
     List<Cliente> GetClientes();
 }
 
 public class ClienteService : IClienteService
 {
-    List<Cliente> clientes;
-    public ClienteService()
+    private readonly TiendaOnlineDbContext context;
+    public ClienteService(TiendaOnlineDbContext context)
     {
-        clientes = new List<Cliente>()
+        this.context = context;
+    }
+
+    public void CreateCliente(ClienteDto clienteDto)
+    {
+        context.Clientes.Add(new Cliente(clienteDto.Nombre, clienteDto.Apellido, clienteDto.Email, clienteDto.Usuario, clienteDto.Contraseña));
+
+        context.SaveChanges();
+    }
+
+    public void DeleteCliente(Guid Idcliente)
+    {
+        var cliente = context.Clientes.FirstOrDefault(x => x.Id == Idcliente);
+
+        if (cliente != null)
         {
-            new Cliente("Ramón", "Lugones", "correoderamon@gmail.com", "Ramon-Ariel-ET12", "Messi"),
-            new Cliente("Josbert", "Rizzo", "correodejosbert@gmail.com", "JJRR", "tito")
-        };
+            context.Remove(cliente);
+
+            context.SaveChanges();
+        }
     }
 
     public List<Cliente> GetClientes()
     {
-        return clientes;
+        return context.Clientes.ToList();
+    }
+
+    public void UpdateCliente(Guid Idcliente, ClienteDto clienteDto)
+    {
+        var cliente = context.Clientes.FirstOrDefault(x => x.Id == Idcliente);
+
+        if (cliente != null)
+        {
+            cliente.Nombre = clienteDto.Nombre;
+            cliente.Apellido = clienteDto.Apellido;
+            cliente.Email = clienteDto.Email;
+            cliente.Usuario = clienteDto.Usuario;
+            cliente.Contraseña = clienteDto.Contraseña;
+
+            context.SaveChanges();
+        }
     }
 }

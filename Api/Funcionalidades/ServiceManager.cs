@@ -8,10 +8,10 @@ public static class ServiceManager
 {
     public static IServiceCollection AddServiceManager(this IServiceCollection services)
     {
-        services.AddSingleton<IClienteService, ClienteService>();
-        services.AddSingleton<ICategoriaService, CategoriaService>();
-        services.AddSingleton<IProductoService, ProductoService>();
-        services.AddSingleton<ICarritoService, CarritoService>();
+        services.AddScoped<IClienteService, ClienteService>();
+        services.AddScoped<ICategoriaService, CategoriaService>();
+        services.AddScoped<IProductoService, ProductoService>();
+        services.AddScoped<ICarritoService, CarritoService>();
 
         return services;
     }

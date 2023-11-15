@@ -1,24 +1,56 @@
 using Aplicacion.Dominio;
+using Api.Persistencia;
 namespace Api.Funcionalidades.Categorias;
 
 public interface ICategoriaService
 {
+    void CreateCategoria(CategoriaDto categoriaDto);
+    void DeleteCategoria(Guid IdCategoria);
+    void UpdateCategoria(Guid Idcategoria, CategoriaDto categoriaDto);
     List<Categoria> GetCategorias();
 }
 public class CategoriaService : ICategoriaService
 {
-    List<Categoria> categorias;
-    public CategoriaService()
+    private readonly TiendaOnlineDbContext context;
+    public CategoriaService(TiendaOnlineDbContext context)
     {
-        categorias = new List<Categoria>()
-        {
-            new Categoria("Deportes", "Todo lo que tiene que ver con deportes"),
-            new Categoria("Juguetes", "Cosas para pibitos"),
-            new Categoria("Electronicas", "Dispositivos electronicos que usas a diario")
-        };
+        this.context = context;
     }
+
+    public void CreateCategoria(CategoriaDto categoriaDto)
+    {
+        context.Categorias.Add(new Categoria(categoriaDto.Nombre, categoriaDto.Descripcion));
+
+        context.SaveChanges();
+    }
+
+    public void DeleteCategoria(Guid IdCategoria)
+    {
+        var categoria = context.Categorias.FirstOrDefault(x => x.Id == IdCategoria);
+
+        if (categoria != null)
+        {
+            context.Remove(categoria);
+
+            context.SaveChanges();
+        }
+    }
+
     public List<Categoria> GetCategorias()
     {
-        return categorias;
+        return context.Categorias.ToList();
+    }
+
+    public void UpdateCategoria(Guid Idcategoria, CategoriaDto categoriaDto)
+    {
+        var categoria = context.Categorias.FirstOrDefault(x => x.Id == Idcategoria);
+
+        if (categoria != null)
+        {
+            categoria.Nombre = categoriaDto.Nombre;
+            categoria.Descripcion = categoriaDto.Descripcion;
+
+            context.SaveChanges();
+        }
     }
 }

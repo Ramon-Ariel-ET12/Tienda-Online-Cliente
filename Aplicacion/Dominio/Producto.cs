@@ -14,8 +14,7 @@ public class Producto
     [Required]
     [StringLength(100)]
     public string Descripcion { get; set; } = string.Empty;
-    [Required]
-    [StringLength(50)]
+    [ForeignKey("IdCategoria")]
     public Categoria? Categoria { get; set; }
     [Required]
     public int Cantidad { get; set; }

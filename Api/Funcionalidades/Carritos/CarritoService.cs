@@ -1,35 +1,53 @@
 using Api.Funcionalidades.Clientes;
 using Api.Funcionalidades.Productos;
 using Aplicacion.Dominio;
+using Api.Persistencia;
 
 namespace Api.Funcionalidades.Carritos;
 
 public interface ICarritoService
 {
+    // void CreateCarrito(CarritoDto carritoDto);
+    void DeleteCategoria(Guid Idcarrito);
     List<Carrito> GetCarritos();
-    List<Carrito> PutCarritos();
+    void UpdateCarrito(Guid Idcarrito, CarritoDto carritoDto);
 }
 public class CarritoService : ICarritoService
 {
-    List<Carrito> carritos;
-    public CarritoService(IProductoService productoService, IClienteService clienteService)
+    private readonly TiendaOnlineDbContext context;
+    public CarritoService(TiendaOnlineDbContext context)
     {
-        List<Producto> productos = productoService.GetProductos();
-        List<Cliente> clientes = clienteService.GetClientes();
-        int total = productos.Sum(x => x.Precio);
-        List<string> nombresProductos = productos.Select(p => p.Nombre).ToList();
-        carritos = new List<Carrito>()
-        {
-            new Carrito(clientes[0], productos, 2, total)
-        };
-    }
-    public List<Carrito> GetCarritos()
-    {
-        return carritos;
+        this.context = context;
     }
 
-    public List<Carrito> PutCarritos()
+    // public void CreateCarrito(CarritoDto carritoDto)
+    // {
+    //     context.Carritos.Add(new Carrito(carritoDto.Cantidad, carritoDto.Total));
+    // }
+
+    public void DeleteCategoria(Guid Idcarrito)
     {
-        throw new NotImplementedException();
+        var carrito = context.Carritos.FirstOrDefault(x => x.Id == Idcarrito);
+        if (carrito != null)
+        {
+            context.Remove(carrito);
+
+            context.SaveChanges();
+        }
+    }
+
+    public List<Carrito> GetCarritos()
+    {
+        return context.Carritos.ToList();
+    }
+
+    public void UpdateCarrito(Guid Idcarrito, CarritoDto carritoDto)
+    {
+        var carrito = context.Carritos.FirstOrDefault(x => x.Id == Idcarrito);
+        if (carrito != null)
+        {
+
+            context.SaveChanges();
+        }
     }
 }
