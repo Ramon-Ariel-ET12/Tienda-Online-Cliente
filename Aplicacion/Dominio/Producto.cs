@@ -15,11 +15,13 @@ public class Producto
     [StringLength(100)]
     public string Descripcion { get; set; } = string.Empty;
     [ForeignKey("IdCategoria")]
-    public Categoria? Categoria { get; set; }
+    public Categoria Categoria { get; set; }
     [Required]
     public int Cantidad { get; set; }
     [Required]
     public int Precio { get; set; }
+    [ForeignKey("IdProducto")]
+    public List<Carrito>? carritos { get; set; }
 
     public Producto(string nombre, string descripcion, int cantidad, int precio)
     {

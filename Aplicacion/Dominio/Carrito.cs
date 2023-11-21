@@ -8,9 +8,9 @@ public class Carrito
     [Key]
     [Required]
     public Guid Id { get; set; } = Guid.NewGuid();
-    [Required]
+    [ForeignKey("IdCliente")]
     public Cliente? Cliente { get; set; }
-    [Required]
+    [ForeignKey("IdCarrito")]
     public List<Producto>? Productos { get; set; }
     [Required]
     public int Cantidad { get; set; }

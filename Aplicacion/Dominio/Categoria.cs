@@ -15,6 +15,8 @@ public class Categoria
     [Required]
     [StringLength(100)]
     public string Descripcion { get; set; } = string.Empty;
+    [ForeignKey("IdProducto")]
+    public List<Producto>? productos { get; set; }
     public Categoria(string nombre, string descripcion)
     {
         Nombre = nombre;

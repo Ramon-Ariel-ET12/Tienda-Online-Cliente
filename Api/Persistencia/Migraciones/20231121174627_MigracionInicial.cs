@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Api.Persistencia.Migraciones
 {
     /// <inheritdoc />
-    public partial class DataSeeding : Migration
+    public partial class MigracionInicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,7 +57,7 @@ namespace Api.Persistencia.Migraciones
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    ClienteId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    IdCliente = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     Cantidad = table.Column<int>(type: "int", nullable: false),
                     Total = table.Column<double>(type: "double", nullable: false)
                 },
@@ -65,11 +65,10 @@ namespace Api.Persistencia.Migraciones
                 {
                     table.PrimaryKey("PK_Carrito", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Carrito_Cliente_ClienteId",
-                        column: x => x.ClienteId,
+                        name: "FK_Carrito_Cliente_IdCliente",
+                        column: x => x.IdCliente,
                         principalTable: "Cliente",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -82,42 +81,47 @@ namespace Api.Persistencia.Migraciones
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Descripcion = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CategoriaId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    IdCategoria = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Cantidad = table.Column<int>(type: "int", nullable: false),
                     Precio = table.Column<int>(type: "int", nullable: false),
-                    CarritoId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                    IdProducto = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Producto", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Producto_Carrito_CarritoId",
-                        column: x => x.CarritoId,
+                        name: "FK_Producto_Carrito_IdProducto",
+                        column: x => x.IdProducto,
                         principalTable: "Carrito",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Producto_Categoria_CategoriaId",
-                        column: x => x.CategoriaId,
+                        name: "FK_Producto_Categoria_IdCategoria",
+                        column: x => x.IdCategoria,
                         principalTable: "Categoria",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Producto_Categoria_IdProducto",
+                        column: x => x.IdProducto,
+                        principalTable: "Categoria",
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Carrito_ClienteId",
+                name: "IX_Carrito_IdCliente",
                 table: "Carrito",
-                column: "ClienteId");
+                column: "IdCliente");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Producto_CarritoId",
+                name: "IX_Producto_IdCategoria",
                 table: "Producto",
-                column: "CarritoId");
+                column: "IdCategoria");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Producto_CategoriaId",
+                name: "IX_Producto_IdProducto",
                 table: "Producto",
-                column: "CategoriaId");
+                column: "IdProducto");
         }
 
         /// <inheritdoc />

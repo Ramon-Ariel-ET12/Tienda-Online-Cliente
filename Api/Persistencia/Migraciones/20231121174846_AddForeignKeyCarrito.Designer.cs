@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Persistencia.Migraciones
 {
     [DbContext(typeof(TiendaOnlineDbContext))]
-    [Migration("20231115165555_DataSeeding")]
-    partial class DataSeeding
+    [Migration("20231121174846_AddForeignKeyCarrito")]
+    partial class AddForeignKeyCarrito
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace Api.Persistencia.Migraciones
                     b.Property<int>("Cantidad")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ClienteId")
+                    b.Property<Guid?>("IdCliente")
                         .HasColumnType("char(36)");
 
                     b.Property<double>("Total")
@@ -39,7 +39,7 @@ namespace Api.Persistencia.Migraciones
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClienteId");
+                    b.HasIndex("IdCliente");
 
                     b.ToTable("Carrito");
                 });
@@ -109,16 +109,16 @@ namespace Api.Persistencia.Migraciones
                     b.Property<int>("Cantidad")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("CarritoId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("CategoriaId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
+
+                    b.Property<Guid>("IdCategoria")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("IdProducto")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -130,9 +130,9 @@ namespace Api.Persistencia.Migraciones
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarritoId");
+                    b.HasIndex("IdCategoria");
 
-                    b.HasIndex("CategoriaId");
+                    b.HasIndex("IdProducto");
 
                     b.ToTable("Producto");
                 });
@@ -141,24 +141,26 @@ namespace Api.Persistencia.Migraciones
                 {
                     b.HasOne("Aplicacion.Dominio.Cliente", "Cliente")
                         .WithMany()
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdCliente");
 
                     b.Navigation("Cliente");
                 });
 
             modelBuilder.Entity("Aplicacion.Dominio.Producto", b =>
                 {
-                    b.HasOne("Aplicacion.Dominio.Carrito", null)
-                        .WithMany("Productos")
-                        .HasForeignKey("CarritoId");
-
                     b.HasOne("Aplicacion.Dominio.Categoria", "Categoria")
                         .WithMany()
-                        .HasForeignKey("CategoriaId")
+                        .HasForeignKey("IdCategoria")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Aplicacion.Dominio.Carrito", null)
+                        .WithMany("Productos")
+                        .HasForeignKey("IdProducto");
+
+                    b.HasOne("Aplicacion.Dominio.Categoria", null)
+                        .WithMany("productos")
+                        .HasForeignKey("IdProducto");
 
                     b.Navigation("Categoria");
                 });
@@ -166,6 +168,11 @@ namespace Api.Persistencia.Migraciones
             modelBuilder.Entity("Aplicacion.Dominio.Carrito", b =>
                 {
                     b.Navigation("Productos");
+                });
+
+            modelBuilder.Entity("Aplicacion.Dominio.Categoria", b =>
+                {
+                    b.Navigation("productos");
                 });
 #pragma warning restore 612, 618
         }
