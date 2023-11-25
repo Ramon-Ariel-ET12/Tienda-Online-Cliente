@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Persistencia.Migraciones
 {
     [DbContext(typeof(TiendaOnlineDbContext))]
-    [Migration("20231121174627_MigracionInicial")]
-    partial class MigracionInicial
+    [Migration("20231125090828_DataSeeding")]
+    partial class DataSeeding
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace Api.Persistencia.Migraciones
                     b.Property<int>("Cantidad")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("IdCliente")
+                    b.Property<Guid?>("ClienteId")
                         .HasColumnType("char(36)");
 
                     b.Property<double>("Total")
@@ -39,7 +39,7 @@ namespace Api.Persistencia.Migraciones
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdCliente");
+                    b.HasIndex("ClienteId");
 
                     b.ToTable("Carrito");
                 });
@@ -100,79 +100,95 @@ namespace Api.Persistencia.Migraciones
                     b.ToTable("Cliente");
                 });
 
-            modelBuilder.Entity("Aplicacion.Dominio.Producto", b =>
+            modelBuilder.Entity("Aplicacion.Dominio.ItemCarrito", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("IdItemCarrito")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
                     b.Property<int>("Cantidad")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("ProductoId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<double>("Subtotal")
+                        .HasColumnType("double");
+
+                    b.HasKey("IdItemCarrito");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("ItemCarritos");
+                });
+
+            modelBuilder.Entity("Aplicacion.Dominio.Producto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<Guid>("IdCategoria")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("IdProducto")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<int>("Precio")
+                    b.Property<Guid?>("IdCategoria")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<double>("Precio")
+                        .HasColumnType("double");
+
+                    b.Property<int>("Stock")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IdCategoria");
 
-                    b.HasIndex("IdProducto");
-
                     b.ToTable("Producto");
                 });
 
             modelBuilder.Entity("Aplicacion.Dominio.Carrito", b =>
                 {
-                    b.HasOne("Aplicacion.Dominio.Cliente", "Cliente")
-                        .WithMany()
-                        .HasForeignKey("IdCliente");
+                    b.HasOne("Aplicacion.Dominio.Cliente", null)
+                        .WithMany("carritos")
+                        .HasForeignKey("ClienteId");
+                });
 
-                    b.Navigation("Cliente");
+            modelBuilder.Entity("Aplicacion.Dominio.ItemCarrito", b =>
+                {
+                    b.HasOne("Aplicacion.Dominio.Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Producto");
                 });
 
             modelBuilder.Entity("Aplicacion.Dominio.Producto", b =>
                 {
-                    b.HasOne("Aplicacion.Dominio.Categoria", "Categoria")
-                        .WithMany()
-                        .HasForeignKey("IdCategoria")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Aplicacion.Dominio.Carrito", null)
-                        .WithMany("Productos")
-                        .HasForeignKey("IdProducto");
-
-                    b.HasOne("Aplicacion.Dominio.Categoria", null)
+                    b.HasOne("Aplicacion.Dominio.Categoria", "categoria")
                         .WithMany("productos")
-                        .HasForeignKey("IdProducto");
+                        .HasForeignKey("IdCategoria");
 
-                    b.Navigation("Categoria");
-                });
-
-            modelBuilder.Entity("Aplicacion.Dominio.Carrito", b =>
-                {
-                    b.Navigation("Productos");
+                    b.Navigation("categoria");
                 });
 
             modelBuilder.Entity("Aplicacion.Dominio.Categoria", b =>
                 {
                     b.Navigation("productos");
+                });
+
+            modelBuilder.Entity("Aplicacion.Dominio.Cliente", b =>
+                {
+                    b.Navigation("carritos");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,6 +8,7 @@ public class Cliente
     [Key]
     [Required]
     public Guid Id { get; set; } = Guid.NewGuid();
+    public List<Carrito>? carritos { get; set; }   
     [Required]
     [StringLength(50)]
     public string Nombre { get; set; }
@@ -24,10 +25,17 @@ public class Cliente
     public string Contraseña { get; set; }
     public Cliente(string nombre, string apellido, string email, string usuario, string contraseña)
     {
+        Validacion.ValidacionCadena(nombre, "error Nombre");
         Nombre = nombre;
+        Validacion.ValidacionCadena(apellido, "error Apellido");
         Apellido = apellido;
+        Validacion.ValidarEmail(email, "error Email");
         Email = email;
+        Validacion.ValidarEmail(usuario, "error Usuario");
         Usuario = usuario;
+        Validacion.ValidarEmail(contraseña, "error contraseña");
         Contraseña = contraseña;
+        carritos = new List<Carrito>();
     }
+    public void AgregarCarrito(Carrito carrito)=>carritos?.Add(carrito); 
 }

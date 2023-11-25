@@ -12,14 +12,15 @@ public class Categoria
     [Required]
     [StringLength(50)]
     public string Nombre { get; set; } = string.Empty;
+    public List<Producto>? productos { get; set; }
     [Required]
     [StringLength(100)]
     public string Descripcion { get; set; } = string.Empty;
-    [ForeignKey("IdProducto")]
-    public List<Producto>? productos { get; set; }
     public Categoria(string nombre, string descripcion)
     {
         Nombre = nombre;
-        Descripcion = descripcion;        
+        Descripcion = descripcion;
+        productos = new List<Producto>();
     }
+    public void AgregarProductos(Producto producto)=>productos?.Add(producto);
 }

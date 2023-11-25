@@ -7,27 +7,28 @@ public class Producto
 {
     [Key]
     [Required]
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; protected set; } = Guid.NewGuid();
+    [Required]
+    [StringLength(30)]
+    public string Nombre { get; set; }
+    [Required]
+    public double Precio { get; set; }
     [Required]
     [StringLength(50)]
-    public string Nombre { get; set; } = string.Empty;
-    [Required]
-    [StringLength(100)]
     public string Descripcion { get; set; } = string.Empty;
+    
     [ForeignKey("IdCategoria")]
-    public Categoria Categoria { get; set; }
-    [Required]
-    public int Cantidad { get; set; }
-    [Required]
-    public int Precio { get; set; }
-    [ForeignKey("IdProducto")]
-    public List<Carrito>? carritos { get; set; }
+    public Categoria? categoria { get; set; } = null;
 
-    public Producto(string nombre, string descripcion, int cantidad, int precio)
+    [Required]
+    public int Stock { get; set; }
+
+    public Producto(string Nombre, double Precio, int Stock)
     {
-        Nombre = nombre;
-        Descripcion = descripcion;
-        Cantidad = cantidad;
-        Precio = precio;
+        Validacion.ValidacionValor(Precio, "error precio");
+        this.Precio = Precio;
+        Validacion.ValidacionCadena(Nombre, "error Nombre");
+        this.Nombre = Nombre;
+        this.Stock = Stock;
     }
 }

@@ -1,16 +1,18 @@
 using Aplicacion.Dominio;
 using Api.Persistencia;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Funcionalidades.Clientes;
 
 public interface IClienteService
 {
-    void DeleteCliente(Guid Idcliente);
-    void UpdateCliente(Guid Idcliente, ClienteDto clienteDto);
-    void CreateCliente(ClienteDto clienteDto);
-    List<Cliente> GetClientes();
+    void AddCarrito(Guid clienteid, Guid carritoid);
+    void CreateClientes(ClienteCommandDto clienteDto);
+    void Deletecarrito(Guid clienteid, Guid carritoid);
+    void DeleteClientes(Guid clienteid);
+    List<ClienteQueryDto> GetClientes();
+    void UpdateClientes(Guid clienteid, ClienteCommandDto clienteDto);
 }
-
 public class ClienteService : IClienteService
 {
     private readonly TiendaOnlineDbContext context;
@@ -19,34 +21,62 @@ public class ClienteService : IClienteService
         this.context = context;
     }
 
-    public void CreateCliente(ClienteDto clienteDto)
+    public void AddCarrito(Guid clienteid, Guid carritoid)
     {
-        context.Clientes.Add(new Cliente(clienteDto.Nombre, clienteDto.Apellido, clienteDto.Email, clienteDto.Usuario, clienteDto.Contraseña));
+        var cliente = context.Clientes.FirstOrDefault(x => x.Id == clienteid);
+        var carrito = context.Carritos.FirstOrDefault(x => x.Id == carritoid);
+        if (cliente != null && carrito != null)
+        {
+            cliente.AgregarCarrito(carrito);
+            context.SaveChanges();
+        }
 
+    }
+
+    public void CreateClientes(ClienteCommandDto clienteDto)
+    {
+        context.Clientes.Add(new Cliente(clienteDto.Nombre, clienteDto.Apellido,
+        clienteDto.Email, clienteDto.Usuario, clienteDto.Contraseña));
         context.SaveChanges();
     }
 
-    public void DeleteCliente(Guid Idcliente)
+    public void Deletecarrito(Guid clienteid, Guid carritoid)
     {
-        var cliente = context.Clientes.FirstOrDefault(x => x.Id == Idcliente);
-
-        if (cliente != null)
+        var cliente = context.Clientes.Where(x => x.Id == clienteid).Include(x => x.Id == carritoid).First();
+        var carrito = cliente.carritos?.FirstOrDefault(x => x.Id == carritoid);
+        if (cliente != null && carrito != null)
         {
-            context.Remove(cliente);
-
+            cliente.carritos?.Remove(carrito);
             context.SaveChanges();
         }
     }
 
-    public List<Cliente> GetClientes()
+    public void DeleteClientes(Guid clienteid)
     {
-        return context.Clientes.ToList();
+        var cliente = context.Clientes.FirstOrDefault(x => x.Id == clienteid);
+        if (cliente != null)
+        {
+            context.Remove(cliente);
+            context.SaveChanges();
+        }
     }
 
-    public void UpdateCliente(Guid Idcliente, ClienteDto clienteDto)
+    public List<ClienteQueryDto> GetClientes()
     {
-        var cliente = context.Clientes.FirstOrDefault(x => x.Id == Idcliente);
+        return context.Clientes
+        .Select(x => new ClienteQueryDto
+        {
+            Id = x.Id,
+            Apellido = x.Apellido,
+            Email = x.Email,
+            Usuario = x.Usuario,
+            Contraseña = x.Contraseña,
+        }).ToList();
+    }
 
+    public void UpdateClientes(Guid clienteid, ClienteCommandDto clienteDto)
+    {
+        var cliente = context.Clientes.FirstOrDefault(x => x.Id == clienteid);
         if (cliente != null)
         {
             cliente.Nombre = clienteDto.Nombre;
@@ -54,7 +84,6 @@ public class ClienteService : IClienteService
             cliente.Email = clienteDto.Email;
             cliente.Usuario = clienteDto.Usuario;
             cliente.Contraseña = clienteDto.Contraseña;
-
             context.SaveChanges();
         }
     }

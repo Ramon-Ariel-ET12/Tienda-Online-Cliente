@@ -5,7 +5,7 @@
 namespace Api.Persistencia.Migraciones
 {
     /// <inheritdoc />
-    public partial class AddForeignKeyCategoria : Migration
+    public partial class AddForeignKey : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
