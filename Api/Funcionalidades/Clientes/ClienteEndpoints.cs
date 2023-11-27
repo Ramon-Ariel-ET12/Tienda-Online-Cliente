@@ -16,26 +16,26 @@ public class ClienteEndpoints : ICarterModule
             clienteService.CreateClientes(clienteDto);
             return Results.Ok();
         });
-        app.MapPut("/api/Cliente/{clienteid}", ([FromServices] IClienteService clienteService, Guid clienteid, ClienteCommandDto clienteDto) =>
+        app.MapPut("/api/Cliente/{Idcliente}", ([FromServices] IClienteService clienteService, Guid Idcliente, ClienteCommandDto clienteDto) =>
         {
-            clienteService.UpdateClientes(clienteid, clienteDto);
+            clienteService.UpdateClientes(Idcliente, clienteDto);
             return Results.Ok();
         });
-        app.MapDelete("/api/Cliente/{clienteid}", ([FromServices] IClienteService clienteService, Guid clienteid) =>
+        app.MapDelete("/api/Cliente/{Idcliente}", ([FromServices] IClienteService clienteService, Guid Idcliente) =>
         {
-            clienteService.DeleteClientes(clienteid);
+            clienteService.DeleteClientes(Idcliente);
             return Results.Ok();
         });
         #endregion
         #region ListCarrito
-        app.MapPost("/api/Cliente/{clienteid}/carrito/{carritoid}", ([FromServices] IClienteService clienteService, Guid clienteid, Guid carritoid) =>
+        app.MapPost("/api/Cliente/{Idcliente}/carrito/{carritoid}", ([FromServices] IClienteService clienteService, Guid Idcliente, Guid carritoid) =>
         {
-            clienteService.AddCarrito(clienteid, carritoid);
+            clienteService.AddCarrito(Idcliente, carritoid);
             return Results.Ok();
         });
-        app.MapDelete("/api/Cliente/{clienteid}/carrito/{carritoid}/Delete", ([FromServices] IClienteService clienteService, Guid clienteid, Guid carritoid) =>
+        app.MapDelete("/api/Cliente/{Idcliente}/carrito/{carritoid}/Delete", ([FromServices] IClienteService clienteService, Guid Idcliente, Guid carritoid) =>
         {
-            clienteService.Deletecarrito(clienteid, carritoid);
+            clienteService.Deletecarrito(Idcliente, carritoid);
             return Results.Ok();
         });
 

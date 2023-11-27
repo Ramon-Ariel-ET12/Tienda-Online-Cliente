@@ -14,9 +14,6 @@ public class ItemCarrito
     public int Cantidad { get; set; }
     [Required]
     public double Subtotal { get; set; }
-
-    public ItemCarrito() { }
-
     public ItemCarrito(Producto producto, int cantidad)
     {
         Producto = producto;

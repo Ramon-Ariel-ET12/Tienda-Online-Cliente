@@ -30,14 +30,14 @@ public class CategoriaEndpoints : ICarterModule
         #endregion
         #region LisProducto
 
-        app.MapPost("/api/categoria/{Idcategoria}/producto/{productoid}", ([FromServices] ICategoriaService categoriaService, Guid Idcategoria, Guid productoid) =>
+        app.MapPost("/api/categoria/{Idcategoria}/producto/{Idproducto}", ([FromServices] ICategoriaService categoriaService, Guid Idcategoria, Guid Idproducto) =>
         {
-            categoriaService.AddCategoria(Idcategoria, productoid);
+            categoriaService.AddCategoria(Idcategoria, Idproducto);
             return Results.Ok();
         });
-        app.MapDelete("/api/categoria/{Idcategoria}/producto/{productoid}/Delete", ([FromServices] ICategoriaService categoriaService, Guid Idcategoria, Guid productoid) =>
+        app.MapDelete("/api/categoria/{Idcategoria}/producto/{Idproducto}/Delete", ([FromServices] ICategoriaService categoriaService, Guid Idcategoria, Guid Idproducto) =>
         {
-            categoriaService.Daleteproducto(Idcategoria, productoid);
+            categoriaService.Daleteproducto(Idcategoria, Idproducto);
             return Results.Ok();
         });
 

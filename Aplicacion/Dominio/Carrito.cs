@@ -8,6 +8,7 @@ public class Carrito
     [Key]
     [Required]
     public Guid Id { get; set; } = Guid.NewGuid();
+    public List<ItemCarrito> productos { get; set; }
 
     [Required]
     public int Cantidad { get; set; }
@@ -17,5 +18,6 @@ public class Carrito
     {
         Cantidad = cantidad;
         Total = total;
+        productos = new List<ItemCarrito>();
     }
 }
