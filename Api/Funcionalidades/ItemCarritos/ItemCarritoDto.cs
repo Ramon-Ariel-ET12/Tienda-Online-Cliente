@@ -4,9 +4,12 @@ using Aplicacion.Dominio;
 namespace Api.Funcionalidades.ItemCarritos;
 public class ItemCarritoCommandDto
 {
-    public Guid IdProducto { get; set; }= Guid.NewGuid();
     public int Cantidad { get; set; }
 }
+public class ItemCarritoCommandDto2
+{
+}
+
 public class ItemCarritoQueryDto
 {
     public Guid IdItemCarrito { get; set; } 

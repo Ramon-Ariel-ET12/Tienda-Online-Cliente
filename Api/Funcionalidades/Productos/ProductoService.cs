@@ -5,7 +5,7 @@ namespace Api.Funcionalidades.Productos;
 
 public interface IProductoService
 {
-    void Createproducto(ProductoCommandDto productoDto);
+    void Createproducto(ProductoCommandDto productoDto, Guid idcategoria);
     void Deleteproducto(Guid productoid);
     List<ProductoQueryDto> GetProductos();
     void Updateproducto(Guid productoId, ProductoCommandDto productoDto);
@@ -19,9 +19,11 @@ public class ProductoService : IProductoService
         this.context = context;
     }
 
-    public void Createproducto(ProductoCommandDto productoDto)
+
+    public void Createproducto(ProductoCommandDto productoDto, Guid idcategoria)
     {
-        context.Productos.Add(new Producto(productoDto.Nombre, productoDto.Precio, productoDto.Stock));
+        var categoria = context.Categorias.FirstOrDefault(x => x.Id == idcategoria);
+        context.Productos.Add(new Producto(categoria, productoDto.Nombre, productoDto.Precio, productoDto.Stock));
         context.SaveChanges();
     }
 

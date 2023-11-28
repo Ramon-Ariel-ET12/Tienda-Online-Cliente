@@ -8,17 +8,23 @@ public class Carrito
     [Key]
     [Required]
     public Guid Id { get; set; } = Guid.NewGuid();
+    public Cliente? Cliente { get; set; }
     public List<ItemCarrito> productos { get; set; }
 
     public int Cantidad { get; set; }
     public double Total { get; set; }
-    public Carrito(Guid id, int cantidad, double total)
+    public Carrito(Cliente? cliente)
     {
-        Id = id;
-        Cantidad = cantidad;
-        Total = total;
+        Cliente = cliente;
+        Cantidad = productos.Count();
+        Total = productos.Sum(x => x.Subtotal);
         productos = new List<ItemCarrito>();
     }
+
+    public Carrito()
+    {
+    }
+
     public void AgregarProductos(ItemCarrito itemCarrito)=>productos?.Add(itemCarrito);
 
 }

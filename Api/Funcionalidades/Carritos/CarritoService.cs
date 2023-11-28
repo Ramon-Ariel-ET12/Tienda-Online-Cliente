@@ -10,11 +10,11 @@ namespace Api.Funcionalidades.Carritos;
 public interface ICarritoService
 {
     void AddItemcarrito(Guid carritoid, Guid itemcarritoid);
-    void CreateCarrito(CarritoCommandDto carritoDto);
+    void CreateCarrito(CarritoCommandDto carritoDto, Guid Idcliente);
     void DeleteCarrito(Guid carritoid);
     void DeleteItemCarrito(Guid carritoid, Guid itemcarritoid);
     List<CarritoQueryDto> GetCarrito();
-    void UpdateCarrito(Guid carritoid, CarritoCommandDto carritoDto);
+    void UpdateCarrito(Guid carritoid, Guid Idcliente);
 }
 public class CarritoService : ICarritoService
 {
@@ -35,9 +35,10 @@ public class CarritoService : ICarritoService
         }
     }
 
-    public void CreateCarrito(CarritoCommandDto carritoDto)
+    public void CreateCarrito(CarritoCommandDto carritoDto, Guid Idcliente)
     {
-        context.Carritos.Add(new Carrito(carritoDto.IdCliente, carritoDto.Cantidad, carritoDto.Total));
+        var cliente = context.Clientes.FirstOrDefault(x => x.Id == Idcliente);
+        context.Carritos.Add(new Carrito(cliente));
         context.SaveChanges();
     }
 
@@ -76,12 +77,12 @@ public class CarritoService : ICarritoService
         return carrito;
     }
 
-    public void UpdateCarrito(Guid carritoid, CarritoCommandDto carritoDto)
+    public void UpdateCarrito(Guid carritoid, Guid Idcliente)
     {
         var carrito = context.Carritos.FirstOrDefault(x => x.Id == carritoid);
         if (carrito != null)
         {
-            carrito.Id = carritoDto.IdCliente;
+            carrito.Id = Idcliente;
         }
     }
 }

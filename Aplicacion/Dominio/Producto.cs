@@ -10,7 +10,7 @@ public class Producto
     public Guid Id { get; protected set; } = Guid.NewGuid();
     [Required]
     [StringLength(30)]
-    public string Nombre { get; set; }
+    public string Nombre { get; set; } = string.Empty;
     [Required]
     public double Precio { get; set; }
     [Required]
@@ -18,13 +18,16 @@ public class Producto
     public string Descripcion { get; set; } = string.Empty;
     
     [ForeignKey("IdCategoria")]
-    public Categoria? categoria { get; set; } = null;
-
+    public Categoria? categorias { get; set; }
     [Required]
     public int Stock { get; set; }
-
-    public Producto(string Nombre, double Precio, int Stock)
+    public Producto()
     {
+    }
+
+    public Producto(Categoria categoria,string Nombre, double Precio, int Stock)
+    {
+        categorias = categoria;
         Validacion.ValidacionValor(Precio, "error precio");
         this.Precio = Precio;
         Validacion.ValidacionCadena(Nombre, "error Nombre");

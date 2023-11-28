@@ -10,14 +10,19 @@ public class ItemCarrito
     [Required]
 
     public Producto? Producto { get; set; }
+    public Carrito? Carrito { get; set; }
     [Required]
     public int Cantidad { get; set; }
     [Required]
     public double Subtotal { get; set; }
-    public ItemCarrito(Producto producto, int cantidad)
+
+    public ItemCarrito()
     {
-        Producto = producto;
-        Cantidad = cantidad;
-        Subtotal = producto.Precio * cantidad;
+    }
+    public ItemCarrito(Carrito carrito)
+    {
+        Carrito = carrito;
+        Cantidad = 0;
+        Subtotal = 0;
     }
 }

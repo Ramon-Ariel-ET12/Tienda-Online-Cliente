@@ -10,12 +10,12 @@ public interface ICategoriaService
     void CreateCategoria(CategoriaCommandDto categoriaDto);
     void DeleteCategoria(Guid Idcategoria);
     void Deleteproducto(Guid Idcategoria, Guid productoid);
-    List<CategoriaQueryDto>GetCategoria();
+    List<CategoriaQueryDto> GetCategoria();
     void UpdateCategoria(Guid Idcategoria, CategoriaCommandDto categoriaDto);
 }
 public class CategoriaService : ICategoriaService
 {
-     private readonly TiendaOnlineDbContext context;
+    private readonly TiendaOnlineDbContext context;
     public CategoriaService(TiendaOnlineDbContext context)
     {
         this.context = context;
@@ -23,9 +23,9 @@ public class CategoriaService : ICategoriaService
 
     public void AddCategoria(Guid Idcategoria, Guid productoid)
     {
-        var categoria= context.Categorias.FirstOrDefault(x=>x.Id==Idcategoria);
-        var producto = context.Productos.FirstOrDefault(x => x.Id ==productoid);
-        if(categoria !=null && producto!=null)
+        var categoria = context.Categorias.FirstOrDefault(x => x.Id == Idcategoria);
+        var producto = context.Productos.FirstOrDefault(x => x.Id == productoid);
+        if (categoria != null && producto != null)
         {
             categoria.AgregarProductos(producto);
             context.SaveChanges();
@@ -34,14 +34,14 @@ public class CategoriaService : ICategoriaService
 
     public void CreateCategoria(CategoriaCommandDto categoriaDto)
     {
-        context.Categorias.Add(new Categoria(categoriaDto.Nombre,categoriaDto.Descripcion));
+        context.Categorias.Add(new Categoria(categoriaDto.Nombre, categoriaDto.Descripcion));
         context.SaveChanges();
     }
 
     public void DeleteCategoria(Guid Idcategoria)
     {
-        var categoria= context.Categorias.FirstOrDefault(x=>x.Id==Idcategoria);
-        if(categoria !=null)
+        var categoria = context.Categorias.FirstOrDefault(x => x.Id == Idcategoria);
+        if (categoria != null)
         {
             context.Remove(categoria);
             context.SaveChanges();
@@ -50,35 +50,35 @@ public class CategoriaService : ICategoriaService
 
     public void Deleteproducto(Guid Idcategoria, Guid productoid)
     {
-        var categoria= context.Categorias.Where(x=>x.Id==Idcategoria).Include(x => x.productos).First();
-        var producto = categoria.productos?.FirstOrDefault(x => x.Id ==productoid);
-        if(categoria !=null && producto!=null)
+        var categoria = context.Categorias.Where(x => x.Id == Idcategoria).Include(x => x.productos).First();
+        var producto = categoria.productos?.FirstOrDefault(x => x.Id == productoid);
+        if (categoria != null && producto != null)
         {
             categoria.productos?.Remove(producto);
             context.SaveChanges();
         }
     }
 
-    public List<CategoriaQueryDto>GetCategoria()
+    public List<CategoriaQueryDto> GetCategoria()
     {
         var categoria = context.Categorias.Include(x => x.productos)
-        .Select(x=> new CategoriaQueryDto
+        .Select(x => new CategoriaQueryDto
         {
-            Id=x.Id,
-            Nombre=x.Nombre,
-            Descripcion=x.Descripcion,
-            Productos = x.productos.Select(y =>new ProductoQueryDto{Id=y.Id,Nombre=y.Nombre,Precio=y.Precio,Stock=y.Stock}).ToList()
+            Id = x.Id,
+            Nombre = x.Nombre,
+            Descripcion = x.Descripcion,
+            Productos = x.productos.Select(y => new ProductoQueryDto { Id = y.Id, Nombre = y.Nombre, Precio = y.Precio, Stock = y.Stock }).ToList()
         }).ToList();
 
         return categoria;
-    }   
+    }
     public void UpdateCategoria(Guid Idcategoria, CategoriaCommandDto categoriaDto)
     {
-        var categoria= context.Categorias.FirstOrDefault(x=>x.Id==Idcategoria);
-        if(categoria !=null)
+        var categoria = context.Categorias.FirstOrDefault(x => x.Id == Idcategoria);
+        if (categoria != null)
         {
-            categoria.Nombre=categoriaDto.Nombre;
-            categoria.Descripcion=categoria.Descripcion;
+            categoria.Nombre = categoriaDto.Nombre;
+            categoria.Descripcion = categoria.Descripcion;
             context.SaveChanges();
         }
     }

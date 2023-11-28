@@ -23,6 +23,10 @@ public class Cliente
     public string Usuario { get; set; }
     [Required]
     public string Contraseña { get; set; }
+    public Cliente(List<Carrito>? carritos)
+    {
+        
+    }
     public Cliente(string nombre, string apellido, string email, string usuario, string contraseña)
     {
         Validacion.ValidacionCadena(nombre, "error Nombre");
@@ -31,9 +35,9 @@ public class Cliente
         Apellido = apellido;
         Validacion.ValidarEmail(email, "error Email");
         Email = email;
-        Validacion.ValidarEmail(usuario, "error Usuario");
+        Validacion.ValidacionCadena(usuario, "error Usuario");
         Usuario = usuario;
-        Validacion.ValidarEmail(contraseña, "error contraseña");
+        Validacion.ValidacionCadena(contraseña, "error contraseña");
         Contraseña = contraseña;
         carritos = new List<Carrito>();
     }

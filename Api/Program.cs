@@ -21,8 +21,6 @@ var connectionString = builder.Configuration.GetConnectionString("5to_TiendaOnli
 builder.Services.AddDbContext<TiendaOnlineDbContext>(opcion =>
     opcion.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 33))));
 
-builder.Services.AddDbContext<TiendaOnlineDbContext>();
-
 var opciones = new DbContextOptionsBuilder<TiendaOnlineDbContext>();
 
 opciones.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 33)));

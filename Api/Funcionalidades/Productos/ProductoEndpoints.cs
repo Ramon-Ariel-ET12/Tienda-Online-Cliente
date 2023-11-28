@@ -10,9 +10,9 @@ public class ProductoEndpoints : ICarterModule
     {
         return Results.Ok(productoService.GetProductos());
     });
-        app.MapPost("/api/producto", ([FromServices] IProductoService productoService, ProductoCommandDto productoDto) =>
+        app.MapPost("/api/producto", ([FromServices] IProductoService productoService, ProductoCommandDto productoDto, Guid idcategoria) =>
     {
-        productoService.Createproducto(productoDto);
+        productoService.Createproducto(productoDto, idcategoria);
         return Results.Ok();
     });
         app.MapPut("/api/producto/{Idproducto}", ([FromServices] IProductoService productoService, Guid Idproducto, ProductoCommandDto productoDto) =>
@@ -25,6 +25,5 @@ public class ProductoEndpoints : ICarterModule
         productoService.Deleteproducto(Idproducto);
         return Results.Ok();
     });
-
     }
 }

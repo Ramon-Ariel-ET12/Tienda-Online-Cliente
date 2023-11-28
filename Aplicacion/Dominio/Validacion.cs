@@ -20,7 +20,7 @@ public class Validacion
     }
     public static void ValidarEmail(string Email, string error)
     {
-        if (!Email.Contains("@") || !Email.Contains(".com"))
+        if (Email.Contains("@") || Email.Contains("."))
         {
         }
         else
