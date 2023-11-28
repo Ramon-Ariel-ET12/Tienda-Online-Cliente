@@ -1,3 +1,5 @@
+using Api.Funcionalidades.Productos;
+using Aplicacion.Dominio;
 using Carter;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +13,9 @@ public class ItemCarritoEndpoints : ICarterModule
             return Results.Ok(itemCarritoService.GetItemCarritos());
         });
 
-        app.MapPost("/api/itemCarrito", ([FromServices] IItemCarritoService itemCarritoService, ItemCarritoCommandDto itemCarritoDto) =>
+        app.MapPost("/api/itemCarrito", ([FromServices] IItemCarritoService itemCarritoService, ItemCarritoCommandDto itemCarritoDto, ProductoQueryDto productoDto) =>
         {
-            itemCarritoService.CreateItemCarritos(itemCarritoDto);
+            itemCarritoService.CreateItemCarritos(itemCarritoDto, productoDto);
             return Results.Ok();
         });
         app.MapPut("/api/itemCarrito/{Iditemcarrito}", ([FromServices] IItemCarritoService itemCarritoService, ItemCarritoCommandDto itemCarritoDto, Guid Iditemcarrito) =>

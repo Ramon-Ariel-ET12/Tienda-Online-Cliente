@@ -5,6 +5,8 @@ namespace Api.Funcionalidades.Carritos;
 public class CarritoCommandDto
 {
     public Guid IdCliente { get; set; } = Guid.NewGuid();
+    public required int Cantidad { get; set; }
+
     public required double Total { get; set; }
 }
 public class CarritoQueryDto

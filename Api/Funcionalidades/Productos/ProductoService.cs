@@ -6,7 +6,7 @@ namespace Api.Funcionalidades.Productos;
 public interface IProductoService
 {
     void Createproducto(ProductoCommandDto productoDto);
-    void Daleteproducto(Guid productoid);
+    void Deleteproducto(Guid productoid);
     List<ProductoQueryDto> GetProductos();
     void Updateproducto(Guid productoId, ProductoCommandDto productoDto);
 }
@@ -25,7 +25,7 @@ public class ProductoService : IProductoService
         context.SaveChanges();
     }
 
-    public void Daleteproducto(Guid productoid)
+    public void Deleteproducto(Guid productoid)
     {
         var producto = context.Productos.FirstOrDefault(x => x.Id == productoid);
         if (producto != null)

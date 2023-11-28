@@ -8,8 +8,8 @@ public interface ICategoriaService
 {
     void AddCategoria(Guid Idcategoria, Guid productoid);
     void CreateCategoria(CategoriaCommandDto categoriaDto);
-    void DaleteCategoria(Guid Idcategoria);
-    void Daleteproducto(Guid Idcategoria, Guid productoid);
+    void DeleteCategoria(Guid Idcategoria);
+    void Deleteproducto(Guid Idcategoria, Guid productoid);
     List<CategoriaQueryDto>GetCategoria();
     void UpdateCategoria(Guid Idcategoria, CategoriaCommandDto categoriaDto);
 }
@@ -38,7 +38,7 @@ public class CategoriaService : ICategoriaService
         context.SaveChanges();
     }
 
-    public void DaleteCategoria(Guid Idcategoria)
+    public void DeleteCategoria(Guid Idcategoria)
     {
         var categoria= context.Categorias.FirstOrDefault(x=>x.Id==Idcategoria);
         if(categoria !=null)
@@ -48,7 +48,7 @@ public class CategoriaService : ICategoriaService
         }
     }
 
-    public void Daleteproducto(Guid Idcategoria, Guid productoid)
+    public void Deleteproducto(Guid Idcategoria, Guid productoid)
     {
         var categoria= context.Categorias.Where(x=>x.Id==Idcategoria).Include(x => x.productos).First();
         var producto = categoria.productos?.FirstOrDefault(x => x.Id ==productoid);
@@ -61,7 +61,7 @@ public class CategoriaService : ICategoriaService
 
     public List<CategoriaQueryDto>GetCategoria()
     {
-        return context.Categorias.Include(x => x.productos)
+        var categoria = context.Categorias.Include(x => x.productos)
         .Select(x=> new CategoriaQueryDto
         {
             Id=x.Id,
@@ -69,6 +69,8 @@ public class CategoriaService : ICategoriaService
             Descripcion=x.Descripcion,
             Productos = x.productos.Select(y =>new ProductoQueryDto{Id=y.Id,Nombre=y.Nombre,Precio=y.Precio,Stock=y.Stock}).ToList()
         }).ToList();
+
+        return categoria;
     }   
     public void UpdateCategoria(Guid Idcategoria, CategoriaCommandDto categoriaDto)
     {

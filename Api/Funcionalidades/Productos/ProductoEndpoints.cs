@@ -22,7 +22,7 @@ public class ProductoEndpoints : ICarterModule
     });
         app.MapDelete("/api/producto/{Idproducto}", ([FromServices] IProductoService productoService, Guid Idproducto) =>
     {
-        productoService.Daleteproducto(Idproducto);
+        productoService.Deleteproducto(Idproducto);
         return Results.Ok();
     });
 

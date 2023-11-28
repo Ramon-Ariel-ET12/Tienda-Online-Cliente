@@ -10,14 +10,15 @@ public class Carrito
     public Guid Id { get; set; } = Guid.NewGuid();
     public List<ItemCarrito> productos { get; set; }
 
-    [Required]
     public int Cantidad { get; set; }
-    [Required]
     public double Total { get; set; }
-    public Carrito(int cantidad, double total)
+    public Carrito(Guid id, int cantidad, double total)
     {
+        Id = id;
         Cantidad = cantidad;
         Total = total;
         productos = new List<ItemCarrito>();
     }
+    public void AgregarProductos(ItemCarrito itemCarrito)=>productos?.Add(itemCarrito);
+
 }

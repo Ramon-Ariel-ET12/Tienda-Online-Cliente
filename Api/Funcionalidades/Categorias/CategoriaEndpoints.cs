@@ -24,7 +24,7 @@ public class CategoriaEndpoints : ICarterModule
         });
         app.MapDelete("/api/categoria/{Idcategoria}", ([FromServices] ICategoriaService categoriaService, Guid Idcategoria) =>
         {
-            categoriaService.DaleteCategoria(Idcategoria);
+            categoriaService.DeleteCategoria(Idcategoria);
             return Results.Ok();
         });
         #endregion
@@ -37,7 +37,7 @@ public class CategoriaEndpoints : ICarterModule
         });
         app.MapDelete("/api/categoria/{Idcategoria}/producto/{Idproducto}/Delete", ([FromServices] ICategoriaService categoriaService, Guid Idcategoria, Guid Idproducto) =>
         {
-            categoriaService.Daleteproducto(Idcategoria, Idproducto);
+            categoriaService.Deleteproducto(Idcategoria, Idproducto);
             return Results.Ok();
         });
 
