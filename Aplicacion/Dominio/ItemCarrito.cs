@@ -19,11 +19,11 @@ public class ItemCarrito
     public ItemCarrito()
     {
     }
-    public ItemCarrito(Producto producto, Carrito carrito)
+    public ItemCarrito(Producto producto, Carrito carrito, int cantidad)
     {
         Producto = producto;
         Carrito = carrito;
-        Cantidad = 0;
-        Subtotal = 0;
+        Cantidad = cantidad;
+        Subtotal = producto.Precio * cantidad;
     }
 }

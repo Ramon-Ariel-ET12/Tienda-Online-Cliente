@@ -8,7 +8,7 @@ public interface IItemCarritoService
     void CreateItemCarritos(ItemCarritoCommandDto itemCarrito, Guid Idproducto, Guid Idcarrito);
     void DeleteItemCarritos(Guid itemcarritoid);
     List<ItemCarritoQueryDto>GetItemCarritos();
-    void UpdateItemCarritos(Guid Iditemcarrito, Guid Idproducto, Guid Idcarrito);
+    void UpdateItemCarritos(ItemCarritoCommandDto ItemCarrito, Guid Iditemcarrito, Guid Idproducto, Guid Idcarrito);
 }
 public  class ItemCarritoService : IItemCarritoService
 {
@@ -24,7 +24,7 @@ public  class ItemCarritoService : IItemCarritoService
     {
         var producto = context.Productos.FirstOrDefault(x => x.Id == Idproducto);
         var carrito = context.Carritos.FirstOrDefault(x => x.Id == Idcarrito);
-        context.ItemCarritos.Add(new ItemCarrito(producto, carrito));
+        context.ItemCarritos.Add(new ItemCarrito(producto, carrito, itemCarrito.Cantidad));
         context.SaveChanges();
     }
 
@@ -50,18 +50,17 @@ public  class ItemCarritoService : IItemCarritoService
             }, Cantidad = x.Cantidad }).ToList();
     }
 
-    public void UpdateItemCarritos(Guid Iditemcarrito, Guid Idproducto, Guid Idcarrito)
+    public void UpdateItemCarritos(ItemCarritoCommandDto ItemCarrito, Guid Iditemcarrito, Guid Idproducto, Guid Idcarrito)
     {
-        var itemCarrito = context.ItemCarritos.FirstOrDefault(x=>x.IdItemCarrito == Iditemcarrito);
+        var item = context.ItemCarritos.FirstOrDefault(x=>x.IdItemCarrito == Iditemcarrito);
         
         var producto = context.Productos.FirstOrDefault(x => x.Id == Idproducto);
 
         var carrito = context.Carritos.FirstOrDefault(x => x.Id == Idcarrito);
-        if (itemCarrito!=null)
+        if (item!=null)
         {
-            itemCarrito.Producto = producto;
-            itemCarrito.Cantidad = itemCarrito.Cantidad;
-            itemCarrito.Carrito = itemCarrito.Carrito;
+            item.Producto = producto;
+            item.Cantidad = ItemCarrito.Cantidad;
             context.SaveChanges();
         }
     }

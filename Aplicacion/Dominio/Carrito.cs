@@ -20,9 +20,9 @@ public class Carrito
     public Carrito(Cliente cliente)
     {
         Cliente = cliente;
+        productos = new List<ItemCarrito>();     
         Cantidad = 0;
         Total = 0;
-        productos = new List<ItemCarrito>();     
     }
 
 
