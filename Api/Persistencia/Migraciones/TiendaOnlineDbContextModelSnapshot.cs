@@ -25,13 +25,13 @@ namespace Api.Persistencia.Migraciones
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("Cantidad")
+                    b.Property<int?>("Cantidad")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("ClienteId")
                         .HasColumnType("char(36)");
 
-                    b.Property<double>("Total")
+                    b.Property<double?>("Total")
                         .HasColumnType("double");
 
                     b.HasKey("Id");
@@ -106,6 +106,9 @@ namespace Api.Persistencia.Migraciones
                     b.Property<int>("Cantidad")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("CarritoId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid>("ProductoId")
                         .HasColumnType("char(36)");
 
@@ -113,6 +116,8 @@ namespace Api.Persistencia.Migraciones
                         .HasColumnType("double");
 
                     b.HasKey("IdItemCarrito");
+
+                    b.HasIndex("CarritoId");
 
                     b.HasIndex("ProductoId");
 
@@ -153,29 +158,42 @@ namespace Api.Persistencia.Migraciones
 
             modelBuilder.Entity("Aplicacion.Dominio.Carrito", b =>
                 {
-                    b.HasOne("Aplicacion.Dominio.Cliente", null)
+                    b.HasOne("Aplicacion.Dominio.Cliente", "Cliente")
                         .WithMany("carritos")
                         .HasForeignKey("ClienteId");
+
+                    b.Navigation("Cliente");
                 });
 
             modelBuilder.Entity("Aplicacion.Dominio.ItemCarrito", b =>
                 {
+                    b.HasOne("Aplicacion.Dominio.Carrito", "Carrito")
+                        .WithMany("productos")
+                        .HasForeignKey("CarritoId");
+
                     b.HasOne("Aplicacion.Dominio.Producto", "Producto")
                         .WithMany()
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Carrito");
+
                     b.Navigation("Producto");
                 });
 
             modelBuilder.Entity("Aplicacion.Dominio.Producto", b =>
                 {
-                    b.HasOne("Aplicacion.Dominio.Categoria", "categoria")
+                    b.HasOne("Aplicacion.Dominio.Categoria", "categorias")
                         .WithMany("productos")
                         .HasForeignKey("IdCategoria");
 
-                    b.Navigation("categoria");
+                    b.Navigation("categorias");
+                });
+
+            modelBuilder.Entity("Aplicacion.Dominio.Carrito", b =>
+                {
+                    b.Navigation("productos");
                 });
 
             modelBuilder.Entity("Aplicacion.Dominio.Categoria", b =>

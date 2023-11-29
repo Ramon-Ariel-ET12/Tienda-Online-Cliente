@@ -23,7 +23,7 @@ public class ProductoService : IProductoService
     public void Createproducto(ProductoCommandDto productoDto, Guid idcategoria)
     {
         var categoria = context.Categorias.FirstOrDefault(x => x.Id == idcategoria);
-        context.Productos.Add(new Producto(categoria, productoDto.Nombre, productoDto.Precio, productoDto.Stock));
+        context.Productos.Add(new Producto(categoria, productoDto.Nombre, productoDto.Precio, productoDto.Descripcion, productoDto.Stock));
         context.SaveChanges();
     }
 

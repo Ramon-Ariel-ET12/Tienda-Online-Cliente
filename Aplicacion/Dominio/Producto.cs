@@ -25,13 +25,15 @@ public class Producto
     {
     }
 
-    public Producto(Categoria categoria,string Nombre, double Precio, int Stock)
+    public Producto(Categoria categoria,string Nombre, double Precio, string Descripcion, int Stock)
     {
         categorias = categoria;
+        Validacion.ValidacionCadena(Nombre, "error Nombre");
+        this.Nombre = Nombre;
         Validacion.ValidacionValor(Precio, "error precio");
         this.Precio = Precio;
         Validacion.ValidacionCadena(Nombre, "error Nombre");
-        this.Nombre = Nombre;
+        this.Descripcion = Descripcion;
         this.Stock = Stock;
     }
 }

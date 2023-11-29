@@ -1,8 +1,8 @@
-using Api.Funcionalidades.Productos;
 using Carter;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Funcionalidades.ItemCarritos;
+
 public class ItemCarritoEndpoints : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
@@ -12,20 +12,22 @@ public class ItemCarritoEndpoints : ICarterModule
             return Results.Ok(itemCarritoService.GetItemCarritos());
         });
 
-        app.MapPost("/api/itemCarrito", ([FromServices] IItemCarritoService itemCarritoService, ItemCarritoCommandDto2 itemCarritoDto, Guid idcarrito) =>
+        app.MapPost("/api/itemCarrito", ([FromServices] IItemCarritoService itemCarritoService, ItemCarritoCommandDto itemCarritoDto, Guid Idproducto, Guid Idcarrito) =>
         {
-            itemCarritoService.CreateItemCarritos(itemCarritoDto, idcarrito);
+            itemCarritoService.CreateItemCarritos(itemCarritoDto, Idproducto, Idcarrito);
             return Results.Ok();
         });
-        app.MapPut("/api/itemCarrito/{Iditemcarrito}", ([FromServices] IItemCarritoService itemCarritoService, ItemCarritoCommandDto itemCarritoDto, Guid Iditemcarrito, Guid IdProducto) =>
+        app.MapPut("/api/itemCarrito/{itemcarritoid}", ([FromServices] IItemCarritoService itemCarritoService, Guid Iditemcarrito, Guid Idproducto, Guid Idcarrito) =>
         {
-            itemCarritoService.UpdateItemCarritos(Iditemcarrito, itemCarritoDto, IdProducto);
+            itemCarritoService.UpdateItemCarritos(Iditemcarrito, Idproducto, Idcarrito);
             return Results.Ok();
         });
-        app.MapDelete("/api/itemCarrito/{Iditemcarrito}", ([FromServices] IItemCarritoService itemCarritoService, Guid Iditemcarrito) =>
+        app.MapDelete("/api/itemCarrito/{itemcarritoid}", ([FromServices] IItemCarritoService itemCarritoService, Guid itemcarritoid) =>
         {
-            itemCarritoService.DeleteItemCarritos(Iditemcarrito);
+            itemCarritoService.DeleteItemCarritos(itemcarritoid);
             return Results.Ok();
         });
+
     }
+
 }

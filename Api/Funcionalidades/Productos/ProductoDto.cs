@@ -13,6 +13,6 @@ public class ProductoQueryDto
     public Guid Id { get; set; }
     public string Nombre { get; set; } = string.Empty;
     public double Precio { get; set; }
-    public Categoria? categoria { get; set; }
+    public Guid categoria { get; set; }
     public int Stock { get; set; }
 }

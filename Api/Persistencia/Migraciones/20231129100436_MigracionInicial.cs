@@ -81,9 +81,9 @@ namespace Api.Persistencia.Migraciones
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Cantidad = table.Column<int>(type: "int", nullable: false),
-                    Total = table.Column<double>(type: "double", nullable: false),
-                    ClienteId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                    ClienteId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    Cantidad = table.Column<int>(type: "int", nullable: true),
+                    Total = table.Column<double>(type: "double", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -102,12 +102,18 @@ namespace Api.Persistencia.Migraciones
                 {
                     IdItemCarrito = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     ProductoId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    CarritoId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     Cantidad = table.Column<int>(type: "int", nullable: false),
                     Subtotal = table.Column<double>(type: "double", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ItemCarritos", x => x.IdItemCarrito);
+                    table.ForeignKey(
+                        name: "FK_ItemCarritos_Carrito_CarritoId",
+                        column: x => x.CarritoId,
+                        principalTable: "Carrito",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ItemCarritos_Producto_ProductoId",
                         column: x => x.ProductoId,
@@ -121,6 +127,11 @@ namespace Api.Persistencia.Migraciones
                 name: "IX_Carrito_ClienteId",
                 table: "Carrito",
                 column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemCarritos_CarritoId",
+                table: "ItemCarritos",
+                column: "CarritoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemCarritos_ProductoId",
@@ -137,16 +148,16 @@ namespace Api.Persistencia.Migraciones
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Carrito");
-
-            migrationBuilder.DropTable(
                 name: "ItemCarritos");
 
             migrationBuilder.DropTable(
-                name: "Cliente");
+                name: "Carrito");
 
             migrationBuilder.DropTable(
                 name: "Producto");
+
+            migrationBuilder.DropTable(
+                name: "Cliente");
 
             migrationBuilder.DropTable(
                 name: "Categoria");

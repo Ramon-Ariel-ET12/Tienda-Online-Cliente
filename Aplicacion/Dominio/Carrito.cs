@@ -11,19 +11,20 @@ public class Carrito
     public Cliente? Cliente { get; set; }
     public List<ItemCarrito> productos { get; set; }
 
-    public int Cantidad { get; set; }
-    public double Total { get; set; }
-    public Carrito(Cliente? cliente)
-    {
-        Cliente = cliente;
-        Cantidad = productos.Count();
-        Total = productos.Sum(x => x.Subtotal);
-        productos = new List<ItemCarrito>();
-    }
-
+    public int? Cantidad { get; set; }
+    public double? Total { get; set; }
     public Carrito()
     {
     }
+    
+    public Carrito(Cliente cliente)
+    {
+        Cliente = cliente;
+        Cantidad = 0;
+        Total = 0;
+        productos = new List<ItemCarrito>();     
+    }
+
 
     public void AgregarProductos(ItemCarrito itemCarrito)=>productos?.Add(itemCarrito);
 

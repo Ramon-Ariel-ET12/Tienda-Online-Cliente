@@ -19,8 +19,9 @@ public class ItemCarrito
     public ItemCarrito()
     {
     }
-    public ItemCarrito(Carrito carrito)
+    public ItemCarrito(Producto producto, Carrito carrito)
     {
+        Producto = producto;
         Carrito = carrito;
         Cantidad = 0;
         Subtotal = 0;
