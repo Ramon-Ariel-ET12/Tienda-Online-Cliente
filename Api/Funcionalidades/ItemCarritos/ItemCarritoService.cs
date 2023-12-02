@@ -34,12 +34,11 @@ public  class ItemCarritoService : IItemCarritoService
 public void DeleteItemCarritos(Guid Iditemcarrito, Guid Idcarrito)
 {
     var itemCarrito = context.ItemCarritos.FirstOrDefault(x => x.IdItemCarrito == Iditemcarrito);
-    var producto = itemCarrito.Producto;
     var carrito = context.Carritos.FirstOrDefault(x => x.Id == Idcarrito);
     if (itemCarrito != null && carrito != null)
     {
         carrito.Total = carrito.Total - itemCarrito.Subtotal;
-        producto.Stock = producto.Stock + itemCarrito.Cantidad;
+        carrito.Cantidad = carrito.Cantidad - 1;
         
 
         context.Remove(itemCarrito);
