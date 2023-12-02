@@ -6,7 +6,7 @@ using Aplicacion.Dominio;
 public interface IItemCarritoService
 {
     void CreateItemCarritos(ItemCarritoCommandDto itemCarrito, Guid Idproducto, Guid Idcarrito);
-    void DeleteItemCarritos(Guid itemcarritoid);
+    void DeleteItemCarritos(Guid Iditemcarrito, Guid Idcarrito);
     List<ItemCarritoQueryDto>GetItemCarritos();
     void UpdateItemCarritos(ItemCarritoCommandDto ItemCarrito, Guid Iditemcarrito, Guid Idproducto, Guid Idcarrito);
 }
@@ -24,19 +24,28 @@ public  class ItemCarritoService : IItemCarritoService
     {
         var producto = context.Productos.FirstOrDefault(x => x.Id == Idproducto);
         var carrito = context.Carritos.FirstOrDefault(x => x.Id == Idcarrito);
+        producto.Stock = producto.Stock - itemCarrito.Cantidad;
+        carrito.Total = carrito.Total + producto.Precio * itemCarrito.Cantidad ;
+        carrito.Cantidad = carrito.Cantidad + itemCarrito.Cantidad;
         context.ItemCarritos.Add(new ItemCarrito(producto, carrito, itemCarrito.Cantidad));
         context.SaveChanges();
     }
 
-    public void DeleteItemCarritos(Guid itemcarritoid)
+public void DeleteItemCarritos(Guid Iditemcarrito, Guid Idcarrito)
+{
+    var itemCarrito = context.ItemCarritos.FirstOrDefault(x => x.IdItemCarrito == Iditemcarrito);
+    var producto = itemCarrito.Producto;
+    var carrito = context.Carritos.FirstOrDefault(x => x.Id == Idcarrito);
+    if (itemCarrito != null && carrito != null)
     {
-        var itemCarrito=context.ItemCarritos.FirstOrDefault(x=>x.IdItemCarrito == itemcarritoid);
-        if(itemCarrito!=null)
-        {
-            context.Remove(itemCarrito);
-            context.SaveChanges();
-        }
+        carrito.Total = carrito.Total - itemCarrito.Subtotal;
+        producto.Stock = producto.Stock + itemCarrito.Cantidad;
+        
+
+        context.Remove(itemCarrito);
+        context.SaveChanges();
     }
+}
 
     public List<ItemCarritoQueryDto> GetItemCarritos()
     {

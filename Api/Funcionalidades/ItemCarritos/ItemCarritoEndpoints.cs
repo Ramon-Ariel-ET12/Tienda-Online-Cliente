@@ -17,14 +17,14 @@ public class ItemCarritoEndpoints : ICarterModule
             itemCarritoService.CreateItemCarritos(itemCarritoDto, Idproducto, Idcarrito);
             return Results.Ok();
         });
-        app.MapPut("/api/itemCarrito/{itemcarritoid}", ([FromServices] IItemCarritoService itemCarritoService, ItemCarritoCommandDto ItemCarrito, Guid Iditemcarrito, Guid Idproducto, Guid Idcarrito) =>
+        app.MapPut("/api/itemCarrito/{Iditemcarrito}", ([FromServices] IItemCarritoService itemCarritoService, ItemCarritoCommandDto ItemCarrito, Guid Iditemcarrito, Guid Idproducto, Guid Idcarrito) =>
         {
             itemCarritoService.UpdateItemCarritos(ItemCarrito, Iditemcarrito, Idproducto, Idcarrito);
             return Results.Ok();
         });
-        app.MapDelete("/api/itemCarrito/{itemcarritoid}", ([FromServices] IItemCarritoService itemCarritoService, Guid itemcarritoid) =>
+        app.MapDelete("/api/itemCarrito/{Iditemcarrito}/carrito/{Idcarrito}/Delete", ([FromServices] IItemCarritoService itemCarritoService, Guid Iditemcarrito, Guid Idcarrito) =>
         {
-            itemCarritoService.DeleteItemCarritos(itemcarritoid);
+            itemCarritoService.DeleteItemCarritos(Iditemcarrito, Idcarrito);
             return Results.Ok();
         });
 

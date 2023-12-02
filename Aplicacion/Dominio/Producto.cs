@@ -7,7 +7,7 @@ public class Producto
 {
     [Key]
     [Required]
-    public Guid Id { get; protected set; } = Guid.NewGuid();
+    public Guid Id { get; set; } = Guid.NewGuid();
     [Required]
     [StringLength(30)]
     public string Nombre { get; set; } = string.Empty;
