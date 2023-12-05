@@ -20,7 +20,7 @@ public class CarritoEndpoints : ICarterModule
         });
         app.MapPut("/api/Carrito/{Idcarrito}",([FromServices]ICarritoService carritoService,Guid Idcliente,Guid Idcarrito)=>
         {
-            carritoService.UpdateCarrito(Idcarrito,Idcliente);
+            carritoService.UpdateCarrito(Idcarrito, Idcliente);
             return Results.Ok();
         });
         app.MapDelete("/api/Carrito/{Idcarrito}",([FromServices]ICarritoService carritoService,Guid Idcarrito)=>

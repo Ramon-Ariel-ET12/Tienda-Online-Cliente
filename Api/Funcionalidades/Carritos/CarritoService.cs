@@ -75,7 +75,7 @@ public class CarritoService : ICarritoService
             Productos = x.productos.Select(y => new ItemCarritoQueryDto
                 {
                     IdItemCarrito = y.IdItemCarrito,
-                    Cantidad = y.Cantidad,
+                    Unidades = y.Unidades,
                     Producto = new ProductoQueryDto
                     {
                         Id = y.Producto.Id,
@@ -94,6 +94,7 @@ public class CarritoService : ICarritoService
         if (carrito != null)
         {
             carrito.Cliente.Id = Idcliente;
+            context.SaveChanges();
         }
     }
 }

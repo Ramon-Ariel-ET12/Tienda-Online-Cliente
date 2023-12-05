@@ -12,18 +12,18 @@ public class ItemCarrito
     public Producto? Producto { get; set; }
     public Carrito? Carrito { get; set; }
     [Required]
-    public int Cantidad { get; set; }
+    public int Unidades { get; set; }
     [Required]
     public double Subtotal { get; set; }
 
     public ItemCarrito()
     {
     }
-    public ItemCarrito(Producto producto, Carrito carrito, int cantidad)
+    public ItemCarrito(Producto producto, Carrito carrito, int Unidades)
     {
         Producto = producto;
         Carrito = carrito;
-        Cantidad = cantidad;
-        Subtotal = producto.Precio * cantidad;
+        Unidades = Unidades;
+        Subtotal = producto.Precio * Unidades;
     }
 }

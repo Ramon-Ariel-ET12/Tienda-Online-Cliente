@@ -24,10 +24,10 @@ public  class ItemCarritoService : IItemCarritoService
     {
         var producto = context.Productos.FirstOrDefault(x => x.Id == Idproducto);
         var carrito = context.Carritos.FirstOrDefault(x => x.Id == Idcarrito);
-        producto.Stock = producto.Stock - itemCarrito.Cantidad;
-        carrito.Total = carrito.Total + producto.Precio * itemCarrito.Cantidad ;
-        carrito.Cantidad = carrito.Cantidad + itemCarrito.Cantidad;
-        context.ItemCarritos.Add(new ItemCarrito(producto, carrito, itemCarrito.Cantidad));
+        producto.Stock = producto.Stock - itemCarrito.Unidades;
+        carrito.Total = carrito.Total + producto.Precio * itemCarrito.Unidades ;
+        carrito.Cantidad = carrito.Cantidad + itemCarrito.Unidades;
+        context.ItemCarritos.Add(new ItemCarrito(producto, carrito, itemCarrito.Unidades));
         context.SaveChanges();
     }
 
@@ -54,7 +54,7 @@ public void DeleteItemCarritos(Guid Iditemcarrito, Guid Idcarrito)
                 Id = x.Producto.Id, 
                 Nombre = x.Producto.Nombre, 
                 Precio = x.Producto.Precio 
-            }, Cantidad = x.Cantidad
+            }, Unidades = x.Unidades
             , Carrito = x.Carrito.Id }).ToList();
     }
 
@@ -68,7 +68,7 @@ public void DeleteItemCarritos(Guid Iditemcarrito, Guid Idcarrito)
         if (item!=null)
         {
             item.Producto = producto;
-            item.Cantidad = ItemCarrito.Cantidad;
+            item.Unidades = ItemCarrito.Unidades;
             context.SaveChanges();
         }
     }
