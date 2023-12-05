@@ -39,7 +39,7 @@ public class ProductoService : IProductoService
 
     public List<ProductoQueryDto> GetProductos()
     {
-        return context.Productos.Select(x => new ProductoQueryDto { Id = x.Id, Nombre = x.Nombre, Precio = x.Precio, Stock = x.Stock }).ToList();
+        return context.Productos.Select(x => new ProductoQueryDto { Id = x.Id, Nombre = x.Nombre, Precio = x.Precio, categoria = x.categorias.Id, Stock = x.Stock }).ToList();
     }
 
     public void Updateproducto(Guid productoid, ProductoCommandDto productoDto)
