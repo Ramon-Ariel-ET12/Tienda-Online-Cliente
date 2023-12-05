@@ -50,7 +50,6 @@ public void DeleteItemCarritos(Guid Iditemcarrito, Guid Idcarrito)
     {
         return context.ItemCarritos.Select(x => new ItemCarritoQueryDto { 
             IdItemCarrito = x.IdItemCarrito,
-            carrito = x.Carrito.Id,
             Producto = new Productos.ProductoQueryDto { 
                 Id = x.Producto.Id, 
                 Nombre = x.Producto.Nombre, 

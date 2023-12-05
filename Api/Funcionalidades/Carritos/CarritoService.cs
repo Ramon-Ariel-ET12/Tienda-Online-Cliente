@@ -70,22 +70,18 @@ public class CarritoService : ICarritoService
         {
             Id = x.Id,
             Cliente = x.Id,
+            Cantidad = x.Cantidad,
             Total = x.Total,
-            Productos = x.productos
-                .Select(y => new ItemCarritoQueryDto
+            Productos = x.productos.Select(y => new ItemCarritoQueryDto
                 {
                     IdItemCarrito = y.IdItemCarrito,
                     Cantidad = y.Cantidad,
-                    carrito = y.Carrito.Id,
                     Producto = new ProductoQueryDto
                     {
                         Id = y.Producto.Id,
                         Nombre = y.Producto.Nombre,
-                        categoria = y.Producto.categorias.Id,
                         Precio = y.Producto.Precio,
-                        Stock = y.Producto.Stock 
-                    },
-            Carrito = x.Id
+                    }                    
                 }).ToList()
         }).ToList();
 
