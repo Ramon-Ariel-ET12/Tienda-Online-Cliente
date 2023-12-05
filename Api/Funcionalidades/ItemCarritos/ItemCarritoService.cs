@@ -54,7 +54,8 @@ public void DeleteItemCarritos(Guid Iditemcarrito, Guid Idcarrito)
                 Id = x.Producto.Id, 
                 Nombre = x.Producto.Nombre, 
                 Precio = x.Producto.Precio 
-            }, Cantidad = x.Cantidad }).ToList();
+            }, Cantidad = x.Cantidad
+            , Carrito = x.Carrito.Id }).ToList();
     }
 
     public void UpdateItemCarritos(ItemCarritoCommandDto ItemCarrito, Guid Iditemcarrito, Guid Idproducto, Guid Idcarrito)

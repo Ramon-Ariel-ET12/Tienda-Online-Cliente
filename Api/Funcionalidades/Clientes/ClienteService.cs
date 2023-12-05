@@ -67,6 +67,7 @@ public class ClienteService : IClienteService
         .Select(x => new ClienteQueryDto
         {
             Id = x.Id,
+            Nombre = x.Nombre,
             Apellido = x.Apellido,
             Email = x.Email,
             Usuario = x.Usuario,
