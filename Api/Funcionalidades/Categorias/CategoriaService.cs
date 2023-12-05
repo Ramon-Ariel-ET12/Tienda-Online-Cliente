@@ -78,7 +78,7 @@ public class CategoriaService : ICategoriaService
         if (categoria != null)
         {
             categoria.Nombre = categoriaDto.Nombre;
-            categoria.Descripcion = categoria.Descripcion;
+            categoria.Descripcion = categoriaDto.Descripcion;
             context.SaveChanges();
         }
     }

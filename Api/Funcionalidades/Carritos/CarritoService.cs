@@ -9,12 +9,12 @@ namespace Api.Funcionalidades.Carritos;
 
 public interface ICarritoService
 {
-    void AddItemcarrito(Guid carritoid, Guid itemcarritoid);
+    void AddItemcarrito(Guid Idcarrito, Guid itemIdcarrito);
     void CreateCarrito(CarritoCommandDto carritoDto, Guid Idcliente);
-    void DeleteCarrito(Guid carritoid);
-    void DeleteItemCarrito(Guid carritoid, Guid itemcarritoid);
+    void DeleteCarrito(Guid Idcarrito);
+    void DeleteItemCarrito(Guid Idcarrito, Guid itemIdcarrito);
     List<CarritoQueryDto> GetCarrito();
-    void UpdateCarrito(Guid carritoid, Guid Idcliente);
+    void UpdateCarrito(Guid Idcarrito, Guid Idcliente);
 }
 public class CarritoService : ICarritoService
 {
@@ -24,10 +24,10 @@ public class CarritoService : ICarritoService
         this.context = context;
     }
 
-    public void AddItemcarrito(Guid carritoid, Guid itemcarritoid)
+    public void AddItemcarrito(Guid Idcarrito, Guid itemIdcarrito)
     {
-        var carrito = context.Carritos.Where(x => x.Id == carritoid).Include(x => x.productos).First();
-        var itemCarrito = context.ItemCarritos.Where(x => x.IdItemCarrito == itemcarritoid).Include(x => x.Producto).First();
+        var carrito = context.Carritos.Where(x => x.Id == Idcarrito).Include(x => x.productos).First();
+        var itemCarrito = context.ItemCarritos.Where(x => x.IdItemCarrito == itemIdcarrito).Include(x => x.Producto).First();
         if (carrito != null && itemCarrito != null)
         {
             carrito.AgregarProductos(itemCarrito);
@@ -42,9 +42,9 @@ public class CarritoService : ICarritoService
         context.SaveChanges();
     }
 
-    public void DeleteCarrito(Guid carritoid)
+    public void DeleteCarrito(Guid Idcarrito)
     {
-        var carrito = context.Carritos.FirstOrDefault(x => x.Id == carritoid);
+        var carrito = context.Carritos.FirstOrDefault(x => x.Id == Idcarrito);
         if (carrito != null)
         {
             context.Remove(carrito);
@@ -52,10 +52,10 @@ public class CarritoService : ICarritoService
         }
     }
 
-    public void DeleteItemCarrito(Guid carritoid, Guid itemcarritoid)
+    public void DeleteItemCarrito(Guid Idcarrito, Guid itemIdcarrito)
     {
-        var carrito = context.Carritos.Where(x => x.Id == carritoid).Include(x=>x.productos).First();
-        var itemCarrito = carrito.productos.FirstOrDefault(x => x.IdItemCarrito == itemcarritoid);
+        var carrito = context.Carritos.Where(x => x.Id == Idcarrito).Include(x=>x.productos).First();
+        var itemCarrito = carrito.productos.FirstOrDefault(x => x.IdItemCarrito == itemIdcarrito);
         if (carrito != null && itemCarrito != null)
         {
             carrito.productos.Remove(itemCarrito);
@@ -88,12 +88,12 @@ public class CarritoService : ICarritoService
         return carrito;
     }
 
-    public void UpdateCarrito(Guid carritoid, Guid Idcliente)
+    public void UpdateCarrito(Guid Idcarrito, Guid Idcliente)
     {
-        var carrito = context.Carritos.FirstOrDefault(x => x.Id == carritoid);
+        var carrito = context.Carritos.FirstOrDefault(x => x.Id == Idcarrito);
         if (carrito != null)
         {
-            carrito.Id = Idcliente;
+            carrito.Cliente.Id = Idcliente;
         }
     }
 }
