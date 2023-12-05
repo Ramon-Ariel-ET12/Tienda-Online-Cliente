@@ -48,8 +48,9 @@ public class ProductoService : IProductoService
         if (producto != null)
         {
             producto.Nombre = productoDto.Nombre;
-            producto.Precio = producto.Precio;
-            producto.Stock = producto.Stock;
+            producto.Descripcion = productoDto.Descripcion;
+            producto.Precio = productoDto.Precio;
+            producto.Stock = productoDto.Stock;
             context.SaveChanges();
         }
 
