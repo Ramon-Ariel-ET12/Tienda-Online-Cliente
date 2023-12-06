@@ -6,10 +6,8 @@ namespace Api.Funcionalidades.Categorias;
 
 public interface ICategoriaService
 {
-    void AddCategoria(Guid Idcategoria, Guid productoid);
     void CreateCategoria(CategoriaCommandDto categoriaDto);
     void DeleteCategoria(Guid Idcategoria);
-    void Deleteproducto(Guid Idcategoria, Guid productoid);
     List<CategoriaQueryDto> GetCategoria();
     void UpdateCategoria(Guid Idcategoria, CategoriaCommandDto categoriaDto);
 }
@@ -19,17 +17,6 @@ public class CategoriaService : ICategoriaService
     public CategoriaService(TiendaOnlineDbContext context)
     {
         this.context = context;
-    }
-
-    public void AddCategoria(Guid Idcategoria, Guid productoid)
-    {
-        var categoria = context.Categorias.FirstOrDefault(x => x.Id == Idcategoria);
-        var producto = context.Productos.FirstOrDefault(x => x.Id == productoid);
-        if (categoria != null && producto != null)
-        {
-            categoria.AgregarProductos(producto);
-            context.SaveChanges();
-        }
     }
 
     public void CreateCategoria(CategoriaCommandDto categoriaDto)
@@ -44,17 +31,6 @@ public class CategoriaService : ICategoriaService
         if (categoria != null)
         {
             context.Remove(categoria);
-            context.SaveChanges();
-        }
-    }
-
-    public void Deleteproducto(Guid Idcategoria, Guid productoid)
-    {
-        var categoria = context.Categorias.Where(x => x.Id == Idcategoria).Include(x => x.productos).First();
-        var producto = categoria.productos?.FirstOrDefault(x => x.Id == productoid);
-        if (categoria != null && producto != null)
-        {
-            categoria.productos?.Remove(producto);
             context.SaveChanges();
         }
     }

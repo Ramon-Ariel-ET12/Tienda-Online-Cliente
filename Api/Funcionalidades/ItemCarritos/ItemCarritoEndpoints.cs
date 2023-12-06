@@ -22,9 +22,9 @@ public class ItemCarritoEndpoints : ICarterModule
             itemCarritoService.UpdateItemCarritos(ItemCarrito, Iditemcarrito, Idproducto, Idcarrito);
             return Results.Ok();
         });
-        app.MapDelete("/api/itemCarrito/{Iditemcarrito}/carrito/{Idcarrito}/Delete", ([FromServices] IItemCarritoService itemCarritoService, Guid Iditemcarrito, Guid Idcarrito) =>
+        app.MapDelete("/api/itemCarrito/{Iditemcarrito}/carrito/{Idcarrito}/Delete", ([FromServices] IItemCarritoService itemCarritoService, Guid Iditemcarrito) =>
         {
-            itemCarritoService.DeleteItemCarritos(Iditemcarrito, Idcarrito);
+            itemCarritoService.DeleteItemCarritos(Iditemcarrito);
             return Results.Ok();
         });
 

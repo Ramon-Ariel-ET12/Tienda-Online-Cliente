@@ -12,7 +12,15 @@ public class ProductoQueryDto
 {
     public Guid Id { get; set; }
     public string Nombre { get; set; } = string.Empty;
+    public string Descripcion { get; set; } = string.Empty;
     public double Precio { get; set; }
     public Guid categoria { get; set; }
     public int Stock { get; set; }
+}
+
+public class ProductoQueryDto2
+{
+    public Guid Id { get; set; }
+    public string Nombre { get; set; } = string.Empty;
+    public double Precio { get; set; }
 }

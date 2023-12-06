@@ -11,7 +11,16 @@ public class ItemCarritoCommandDto
 public class ItemCarritoQueryDto
 {
     public Guid IdItemCarrito { get; set; } 
-    public required ProductoQueryDto Producto { get; set; }
     public Guid Carrito { get; set; }
+    public required ProductoQueryDto2 Producto { get; set; }
     public int Unidades { get; set; }
+    public double Subtotal { get; set; }
+}
+
+public class ItemCarritoQueryDto2
+{
+    public Guid IdItemCarrito { get; set; } 
+    public required ProductoQueryDto2 Producto { get; set; }
+    public int Unidades { get; set; }
+    public double Subtotal { get; set; }
 }

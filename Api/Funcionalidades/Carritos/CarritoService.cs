@@ -9,12 +9,11 @@ namespace Api.Funcionalidades.Carritos;
 
 public interface ICarritoService
 {
-    void AddItemcarrito(Guid Idcarrito, Guid itemIdcarrito);
     void CreateCarrito(CarritoCommandDto carritoDto, Guid Idcliente);
     void DeleteCarrito(Guid Idcarrito);
-    void DeleteItemCarrito(Guid Idcarrito, Guid itemIdcarrito);
     List<CarritoQueryDto> GetCarrito();
     void UpdateCarrito(Guid Idcarrito, Guid Idcliente);
+    void BuyCarrito(Guid Idcarrito);
 }
 public class CarritoService : ICarritoService
 {
@@ -24,13 +23,25 @@ public class CarritoService : ICarritoService
         this.context = context;
     }
 
-    public void AddItemcarrito(Guid Idcarrito, Guid itemIdcarrito)
+    public void BuyCarrito(Guid Idcarrito)
     {
-        var carrito = context.Carritos.Where(x => x.Id == Idcarrito).Include(x => x.productos).First();
-        var itemCarrito = context.ItemCarritos.Where(x => x.IdItemCarrito == itemIdcarrito).Include(x => x.Producto).First();
-        if (carrito != null && itemCarrito != null)
+        var carrito = context.Carritos
+        .Include(c => c.productos)
+        .ThenInclude(ic => ic.Producto)
+        .FirstOrDefault(c => c.Id == Idcarrito);
+        
+        if (carrito != null)
         {
-            carrito.AgregarProductos(itemCarrito);
+            foreach (var itemCarrito in carrito.productos)
+            {
+                if (itemCarrito.Producto.Stock >= itemCarrito.Unidades)
+                {
+                    itemCarrito.Producto.Stock -= itemCarrito.Unidades;
+                }
+
+            }
+            context.RemoveRange(carrito.productos);
+            context.Remove(carrito);
             context.SaveChanges();
         }
     }
@@ -52,31 +63,20 @@ public class CarritoService : ICarritoService
         }
     }
 
-    public void DeleteItemCarrito(Guid Idcarrito, Guid itemIdcarrito)
-    {
-        var carrito = context.Carritos.Where(x => x.Id == Idcarrito).Include(x=>x.productos).First();
-        var itemCarrito = carrito.productos.FirstOrDefault(x => x.IdItemCarrito == itemIdcarrito);
-        if (carrito != null && itemCarrito != null)
-        {
-            carrito.productos.Remove(itemCarrito);
-            context.SaveChanges();
-        }
-    }
-
     public List<CarritoQueryDto> GetCarrito()
     {
         var carrito = context.Carritos.Include(x => x.productos).ThenInclude(x => x.Producto)
         .Select( x=>new CarritoQueryDto
         {
             Id = x.Id,
-            Cliente = x.Id,
+            Cliente = x.Cliente.Id,
             Cantidad = x.Cantidad,
             Total = x.Total,
-            Productos = x.productos.Select(y => new ItemCarritoQueryDto
+            Productos = x.productos.Select(y => new ItemCarritoQueryDto2
                 {
                     IdItemCarrito = y.IdItemCarrito,
                     Unidades = y.Unidades,
-                    Producto = new ProductoQueryDto
+                    Producto = new ProductoQueryDto2
                     {
                         Id = y.Producto.Id,
                         Nombre = y.Producto.Nombre,
@@ -90,10 +90,14 @@ public class CarritoService : ICarritoService
 
     public void UpdateCarrito(Guid Idcarrito, Guid Idcliente)
     {
+        // Solo cambia el cliente, el carrito se queda intacto
         var carrito = context.Carritos.FirstOrDefault(x => x.Id == Idcarrito);
+
+        var cliente = context.Clientes.FirstOrDefault(x => x.Id == Idcliente);
+
         if (carrito != null)
         {
-            carrito.Cliente.Id = Idcliente;
+            carrito.Cliente = cliente;
             context.SaveChanges();
         }
     }

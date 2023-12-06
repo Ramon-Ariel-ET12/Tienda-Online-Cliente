@@ -27,18 +27,5 @@ public class ClienteEndpoints : ICarterModule
             return Results.Ok();
         });
         #endregion
-        #region ListCarrito
-        app.MapPost("/api/Cliente/{Idcliente}/carrito/{Idcarrito}", ([FromServices] IClienteService clienteService, Guid Idcliente, Guid carritoid) =>
-        {
-            clienteService.AddCarrito(Idcliente, carritoid);
-            return Results.Ok();
-        });
-        app.MapDelete("/api/Cliente/{Idcliente}/carrito/{Idcarrito}/Delete", ([FromServices] IClienteService clienteService, Guid Idcliente, Guid carritoid) =>
-        {
-            clienteService.Deletecarrito(Idcliente, carritoid);
-            return Results.Ok();
-        });
-
-        #endregion
     }
 }
