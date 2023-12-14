@@ -76,6 +76,7 @@ public class CarritoService : ICarritoService
                 {
                     IdItemCarrito = y.IdItemCarrito,
                     Unidades = y.Unidades,
+                    Subtotal = y.Subtotal,
                     Producto = new ProductoQueryDto2
                     {
                         Id = y.Producto.Id,

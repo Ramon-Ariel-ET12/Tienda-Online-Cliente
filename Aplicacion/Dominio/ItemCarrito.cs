@@ -24,6 +24,6 @@ public class ItemCarrito
         Producto = producto;
         Carrito = carrito;
         Unidades = unidades;
-        Subtotal = producto.Precio * Unidades;
+        Subtotal = producto.Precio * unidades;
     }
 }

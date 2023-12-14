@@ -43,7 +43,7 @@ public class CategoriaService : ICategoriaService
             Id = x.Id,
             Nombre = x.Nombre,
             Descripcion = x.Descripcion,
-            Productos = x.productos.Select(y => new ProductoQueryDto { Id = y.Id, Nombre = y.Nombre, Precio = y.Precio, Stock = y.Stock }).ToList()
+            Productos = x.productos.Select(y => new ProductoQueryDto2 { Id = y.Id, Nombre = y.Nombre, Precio = y.Precio}).ToList()
         }).ToList();
 
         return categoria;
